@@ -23,3 +23,28 @@ export const auditLog = pgTable('audit_log', {
   ipAddress: text('ip_address'),
   createdAt: timestamp('created_at').notNull().default(now()),
 });
+
+// Track freelance income sources and earnings
+export const incomeStream = pgTable('income_stream', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  sourceName: text('source_name').notNull(),
+  totalEarnings: text('total_earnings').notNull(),
+  taxRate: text('tax_rate').notNull(),
+  frequency: text('frequency').notNull(),
+  createdAt: timestamp('created_at').default(now()),
+  updatedAt: timestamp('updated_at').default(now()),
+});
+
+// Record and categorize potential tax deductions
+export const taxDeduction = pgTable('tax_deduction', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  category: text('category').notNull(),
+  description: text('description').notNull(),
+  amount: text('amount').notNull(),
+  receiptUrl: text('receipt_url'),
+  taxYear: integer('tax_year').notNull(),
+  createdAt: timestamp('created_at').default(now()),
+  updatedAt: timestamp('updated_at').default(now()),
+});
