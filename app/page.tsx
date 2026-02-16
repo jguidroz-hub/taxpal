@@ -5,14 +5,10 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, Calculator, Receipt, Bell, FileText, RefreshCw, TrendingDown, Zap, Shield, X, Check } from 'lucide-react';
 
-// 2026 tax brackets (single filer)
 const BRACKETS = [
-  { min: 0, max: 11925, rate: 0.10 },
-  { min: 11925, max: 48475, rate: 0.12 },
-  { min: 48475, max: 103350, rate: 0.22 },
-  { min: 103350, max: 197300, rate: 0.24 },
-  { min: 197300, max: 250525, rate: 0.32 },
-  { min: 250525, max: 626350, rate: 0.35 },
+  { min: 0, max: 11925, rate: 0.10 }, { min: 11925, max: 48475, rate: 0.12 },
+  { min: 48475, max: 103350, rate: 0.22 }, { min: 103350, max: 197300, rate: 0.24 },
+  { min: 197300, max: 250525, rate: 0.32 }, { min: 250525, max: 626350, rate: 0.35 },
   { min: 626350, max: Infinity, rate: 0.37 },
 ];
 
@@ -40,37 +36,9 @@ function calcTaxes(income: number, expenses: number) {
 
 const fmt = (n: number) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
-const features = [
-  { icon: Calculator, title: 'Estimated Tax Calculator', desc: '2026 tax brackets, SE tax, QBI deduction, standard deduction — all calculated instantly.', color: 'from-emerald-500 to-cyan-500' },
-  { icon: Receipt, title: 'Income & Expense Tracker', desc: 'Log every payment and deduction in real-time. Categorized by IRS Schedule C. Always audit-ready.', color: 'from-cyan-500 to-blue-500' },
-  { icon: Bell, title: 'Quarterly Deadline Alerts', desc: 'Never miss April 15, June 16, September 15, or January 15. Reminders before each due date.', color: 'from-purple-500 to-pink-500' },
-  { icon: TrendingDown, title: 'Deduction Maximizer', desc: '12 IRS categories with auto-calculated deduction percentages. Meals at 50%, home office, mileage, and more.', color: 'from-amber-500 to-orange-500' },
-  { icon: FileText, title: 'Tax-Ready CSV Reports', desc: 'One click to export your full year: income detail, expenses by category, and complete tax computation.', color: 'from-emerald-500 to-teal-500' },
-  { icon: RefreshCw, title: 'W-2 → 1099 Transition Planner', desc: 'Going freelance? Model your take-home, SE tax hit, and savings rate before you quit your job.', color: 'from-blue-500 to-purple-500' },
-];
-
-const tiers = [
-  { name: 'Starter', price: '$9', period: '/mo', desc: 'For new freelancers', features: ['Estimated tax calculator', 'Quarterly deadline reminders', 'Up to 50 entries/month', 'Basic CSV reports', 'Email support'], cta: 'Start Free Trial', href: '/signup?plan=starter', popular: false },
-  { name: 'Pro', price: '$29', period: '/mo', desc: 'For active freelancers', features: ['Everything in Starter', 'Unlimited income & expense entries', 'W-2 to 1099 transition planner', 'Smart tax alerts', 'Full CSV/PDF export', 'Priority support'], cta: 'Start Free Trial', href: '/signup?plan=pro', popular: true },
-  { name: 'Business', price: '$79', period: '/mo', desc: 'For agencies & multi-client', features: ['Everything in Pro', 'Multiple business entities', 'CPA collaboration portal', 'API access', 'Quarterly tax filing prep', 'Dedicated support'], cta: 'Start Free Trial', href: '/signup?plan=business', popular: false },
-];
-
-const comparisonRows = [
-  { feature: 'Built for 1099 contractors', taxpal: true, turbotax: false, note: 'TurboTax is built for W-2 filers first' },
-  { feature: 'Real-time quarterly estimates', taxpal: true, turbotax: false, note: 'TurboTax only calculates at filing time' },
-  { feature: 'Track income & expenses year-round', taxpal: true, turbotax: false, note: 'TurboTax is once-a-year' },
-  { feature: 'SE tax + QBI calculated automatically', taxpal: true, turbotax: true, note: '' },
-  { feature: 'No 100-question interview', taxpal: true, turbotax: false, note: 'Get answers in 30 seconds, not 30 minutes' },
-  { feature: 'Deduction tracking by IRS category', taxpal: true, turbotax: false, note: 'Year-round, not just at tax time' },
-  { feature: 'Costs less than $200/year', taxpal: true, turbotax: false, note: 'TurboTax SE edition: $219+' },
-  { feature: 'CPA-ready export anytime', taxpal: true, turbotax: false, note: 'Export your data whenever you need it' },
-];
-
 export default function Home() {
   const [demoIncome, setDemoIncome] = useState('75000');
   const [demoExpenses, setDemoExpenses] = useState('15000');
-  const [showResults, setShowResults] = useState(false);
-
   const income = parseFloat(demoIncome) || 0;
   const expenses = parseFloat(demoExpenses) || 0;
   const taxes = calcTaxes(income, expenses);
@@ -78,9 +46,9 @@ export default function Home() {
   const deductionSavings = noDeductionTaxes.totalTax - taxes.totalTax;
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
         <div className="max-w-7xl mx-auto px-6 flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
@@ -88,451 +56,419 @@ export default function Home() {
             </div>
             <span className="font-bold text-lg">TaxPal</span>
           </Link>
-          <div className="hidden md:flex items-center gap-1">
-            <a href="#calculator" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition">Calculator</a>
-            <a href="#features" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition">Features</a>
-            <a href="#compare" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition">Compare</a>
-            <a href="#pricing" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition">Pricing</a>
+          <div className="hidden md:flex items-center gap-6">
+            <a href="#calculator" className="text-sm text-muted-foreground hover:text-foreground transition">Calculator</a>
+            <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition">Features</a>
+            <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition">Pricing</a>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground transition">Log In</Link>
-            <Link href="/signup" className="text-sm px-5 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-background font-medium hover:from-emerald-600 hover:to-cyan-600 transition">
+            <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">Log In</Link>
+            <Link href="/signup" className="text-sm px-5 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-background font-medium hover:from-emerald-600 hover:to-cyan-600 transition">
               Start Free →
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="relative min-h-[85vh] flex items-center justify-center px-6 py-20 overflow-hidden">
-        {/* Aurora background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute w-[600px] h-[600px] rounded-full blur-3xl top-[5%] left-[5%] opacity-30" style={{ background: 'rgba(52, 211, 153, 0.25)' }} />
-          <div className="absolute w-[700px] h-[700px] rounded-full blur-3xl top-[15%] right-0 opacity-30" style={{ background: 'rgba(34, 211, 238, 0.22)' }} />
-          <div className="absolute w-[500px] h-[500px] rounded-full blur-3xl bottom-[10%] left-[20%] opacity-25" style={{ background: 'rgba(168, 85, 247, 0.18)' }} />
+      {/* ═══════════════ HERO — Split layout ═══════════════ */}
+      <section className="relative px-6 py-24 md:py-32 overflow-hidden">
+        {/* Aurora */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute w-[800px] h-[800px] rounded-full blur-[120px] -top-[200px] -left-[200px] opacity-30 bg-emerald-500/30" />
+          <div className="absolute w-[600px] h-[600px] rounded-full blur-[100px] top-[10%] right-[-100px] opacity-20 bg-cyan-500/25" />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto text-center space-y-8">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-purple-500/10 border border-cyan-500/30 text-sm font-medium backdrop-blur-sm"
-          >
-            <Zap className="w-4 h-4 text-amber-400" />
-            Q1 2026 estimated taxes due April 15
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-          </motion.div>
+        <div className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+          {/* Left: Copy */}
+          <div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-medium text-amber-400 mb-6">
+              <Zap className="w-3 h-3" /> Q1 2026 taxes due April 15
+            </motion.div>
 
-          {/* Headline */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-4"
-          >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
-              The tax tool{' '}
-              <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6">
+              The tax tool<br />
+              <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
                 built for freelancers
               </span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              TurboTax is built for W-2 employees. TaxPal is built for you — the 1099 contractor, the freelancer, the side hustler.
-              Know exactly what you owe. Every quarter. No 100-question interview. No $200 filing fee.
-            </p>
-          </motion.div>
+            </motion.h1>
 
-          {/* Feature pills */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-wrap items-center justify-center gap-6"
-          >
-            {[
-              { icon: Shield, text: '2026 tax brackets built in', color: 'text-emerald-400' },
-              { icon: Calculator, text: 'SE tax + QBI + deductions', color: 'text-cyan-400' },
-              { icon: Bell, text: 'Quarterly deadline alerts', color: 'text-purple-400' },
-            ].map((f, i) => (
-              <motion.div key={i} className="flex items-center gap-2 text-sm" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 + i * 0.1 }}>
-                <f.icon className={`w-4 h-4 ${f.color}`} />
-                <span className="text-muted-foreground">{f.text}</span>
-              </motion.div>
-            ))}
-          </motion.div>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
+              TurboTax is for W-2 employees. TaxPal is for you — the 1099 contractor who needs to know what to pay <em>every quarter</em>, not just in April.
+            </motion.p>
 
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
-          >
-            <a href="#calculator">
-              <button className="text-lg px-10 py-4 rounded-xl font-medium bg-gradient-to-r from-emerald-500 via-cyan-500 to-emerald-500 text-background hover:from-emerald-600 hover:via-cyan-600 hover:to-emerald-600 shadow-xl shadow-emerald-500/20 flex items-center gap-2 transition">
-                Try the Calculator — Free
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </a>
-            <Link href="/signup">
-              <button className="text-lg px-8 py-4 rounded-xl font-medium border border-border hover:bg-muted transition">
-                Start Free Trial
-              </button>
-            </Link>
-          </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-wrap gap-4 mb-6">
+              <a href="#calculator">
+                <button className="px-8 py-3.5 rounded-xl font-medium bg-gradient-to-r from-emerald-500 to-cyan-500 text-background hover:from-emerald-600 hover:to-cyan-600 shadow-lg shadow-emerald-500/20 flex items-center gap-2 transition text-base">
+                  Try the Calculator <ArrowRight className="w-4 h-4" />
+                </button>
+              </a>
+              <Link href="/signup">
+                <button className="px-8 py-3.5 rounded-xl font-medium border border-border hover:bg-card transition text-base">
+                  Start Free Trial
+                </button>
+              </Link>
+            </motion.div>
 
-          <p className="text-sm text-muted-foreground">No credit card required · 14-day free trial · Cancel anytime</p>
-        </div>
-
-        {/* Product Mockup */}
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.1 }}
-          className="relative z-10 max-w-5xl mx-auto mt-16 px-6"
-        >
-          <div className="rounded-xl border border-border bg-card shadow-2xl shadow-emerald-500/10 overflow-hidden">
-            {/* Browser chrome */}
-            <div className="flex items-center gap-2 px-4 py-3 bg-muted border-b border-border">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                <div className="w-3 h-3 rounded-full bg-green-500/60" />
-              </div>
-              <div className="flex-1 mx-4">
-                <div className="bg-background rounded-md px-3 py-1 text-xs text-muted-foreground text-center">taxpal-kappa.vercel.app/dashboard/tracker</div>
-              </div>
-            </div>
-            {/* Fake dashboard content */}
-            <div className="p-6 bg-background">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <div className="text-lg font-bold">Income & Expense Tracker</div>
-                  <div className="text-xs text-muted-foreground">Q1 2026 · Tax Year in Progress</div>
-                </div>
-                <div className="flex gap-2">
-                  <div className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-xs text-emerald-400">+ Add Income</div>
-                  <div className="px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg text-xs text-red-400">+ Add Expense</div>
-                </div>
-              </div>
-              {/* Summary cards */}
-              <div className="grid grid-cols-4 gap-3 mb-6">
-                {[
-                  { label: 'Total Income', value: '$47,250', color: 'text-emerald-400', bg: 'from-emerald-500/10 to-emerald-500/5' },
-                  { label: 'Total Expenses', value: '$12,890', color: 'text-red-400', bg: 'from-red-500/10 to-red-500/5' },
-                  { label: 'Estimated Tax', value: '$8,432', color: 'text-amber-400', bg: 'from-amber-500/10 to-amber-500/5' },
-                  { label: 'Q1 Payment Due', value: '$2,108', color: 'text-cyan-400', bg: 'from-cyan-500/10 to-cyan-500/5' },
-                ].map((c, i) => (
-                  <div key={i} className={`bg-gradient-to-br ${c.bg} border border-border rounded-lg p-3`}>
-                    <div className="text-[10px] text-muted-foreground">{c.label}</div>
-                    <div className={`text-lg font-bold ${c.color}`}>{c.value}</div>
-                  </div>
-                ))}
-              </div>
-              {/* Fake table */}
-              <div className="border border-border rounded-lg overflow-hidden">
-                <div className="grid grid-cols-5 text-[10px] text-muted-foreground font-medium py-2 px-4 bg-muted">
-                  <span>Date</span><span>Description</span><span>Category</span><span className="text-right">Amount</span><span className="text-right">Type</span>
-                </div>
-                {[
-                  { date: 'Feb 14', desc: 'Acme Corp - Website Redesign', cat: 'Freelance Income', amt: '$4,500', type: 'income', color: 'text-emerald-400' },
-                  { date: 'Feb 12', desc: 'Adobe Creative Cloud', cat: 'Software & Subscriptions', amt: '-$54.99', type: 'expense', color: 'text-red-400' },
-                  { date: 'Feb 10', desc: 'Sarah K. - Logo Design', cat: 'Freelance Income', amt: '$1,200', type: 'income', color: 'text-emerald-400' },
-                  { date: 'Feb 8', desc: 'WeWork Day Pass', cat: 'Office & Workspace', amt: '-$29.00', type: 'expense', color: 'text-red-400' },
-                  { date: 'Feb 5', desc: 'Client Lunch - Marcus T.', cat: 'Meals (50% deductible)', amt: '-$47.80', type: 'expense', color: 'text-red-400' },
-                ].map((row, i) => (
-                  <div key={i} className="grid grid-cols-5 text-xs py-2.5 px-4 border-t border-border hover:bg-muted/50">
-                    <span className="text-muted-foreground">{row.date}</span>
-                    <span>{row.desc}</span>
-                    <span className="text-muted-foreground">{row.cat}</span>
-                    <span className={`text-right font-medium ${row.color}`}>{row.amt}</span>
-                    <span className="text-right">
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded ${row.type === 'income' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>{row.type}</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+              className="flex items-center gap-6 text-sm text-muted-foreground">
+              <span className="flex items-center gap-1.5"><Check className="w-4 h-4 text-emerald-400" /> No credit card</span>
+              <span className="flex items-center gap-1.5"><Check className="w-4 h-4 text-emerald-400" /> 14-day trial</span>
+              <span className="flex items-center gap-1.5"><Check className="w-4 h-4 text-emerald-400" /> Cancel anytime</span>
+            </motion.div>
           </div>
-          {/* Glow effect under mockup */}
-          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-emerald-500/10 blur-3xl rounded-full" />
-        </motion.div>
+
+          {/* Right: Product mockup */}
+          <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.4 }}>
+            <div className="rounded-2xl border border-border bg-card shadow-2xl shadow-emerald-500/5 overflow-hidden">
+              <div className="flex items-center gap-2 px-4 py-2.5 bg-muted/50 border-b border-border">
+                <div className="flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-red-500/50" /><div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" /><div className="w-2.5 h-2.5 rounded-full bg-green-500/50" /></div>
+                <div className="flex-1"><div className="bg-background rounded px-3 py-0.5 text-[10px] text-muted-foreground text-center mx-8">taxpal.app/dashboard</div></div>
+              </div>
+              <div className="p-5 bg-background space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm font-semibold">Q1 2026 Summary</div>
+                  <div className="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">⏰ Due Apr 15</div>
+                </div>
+                <div className="grid grid-cols-2 gap-2.5">
+                  {[
+                    { l: 'Net Income', v: '$60,000', c: 'text-foreground' },
+                    { l: 'Total Tax', v: '$14,289', c: 'text-red-400' },
+                    { l: 'Quarterly', v: '$3,572', c: 'text-amber-400' },
+                    { l: 'Take-Home', v: '$45,711', c: 'text-emerald-400' },
+                  ].map((c, i) => (
+                    <div key={i} className="bg-card border border-border rounded-lg px-3 py-2.5">
+                      <div className="text-[10px] text-muted-foreground">{c.l}</div>
+                      <div className={`text-base font-bold ${c.c}`}>{c.v}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-[11px]"><span className="text-muted-foreground">SE Tax (15.3%)</span><span>$8,554</span></div>
+                  <div className="flex justify-between text-[11px]"><span className="text-muted-foreground">Federal Income</span><span>$5,735</span></div>
+                  <div className="h-px bg-border my-1" />
+                  <div className="flex justify-between text-[11px] font-medium"><span>Deduction Savings</span><span className="text-emerald-400">−$3,612/yr</span></div>
+                </div>
+                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 text-center">
+                  <div className="text-[10px] text-emerald-400 mb-0.5">💰 Your deductions save you</div>
+                  <div className="text-lg font-bold text-emerald-400">$3,612/year</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
-      {/* Social Proof Bar */}
-      <section className="py-8 border-y border-border bg-card/50">
-        <div className="max-w-5xl mx-auto px-6 flex flex-wrap justify-center gap-10 md:gap-20 text-center">
+      {/* ═══════════════ Stats ribbon ═══════════════ */}
+      <section className="border-y border-border bg-card/30">
+        <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            { value: '15.3%', label: 'SE tax most freelancers miss', color: 'text-emerald-400' },
-            { value: '42%', label: 'of freelancers underpay quarterly', color: 'text-red-400' },
-            { value: '$2,400', label: 'avg. missed deductions/yr', color: 'text-amber-400' },
-            { value: '30 sec', label: 'to know what you owe', color: 'text-cyan-400' },
+            { v: '15.3%', l: 'SE tax most miss', c: 'text-emerald-400' },
+            { v: '42%', l: 'of freelancers underpay', c: 'text-red-400' },
+            { v: '$2,400', l: 'avg missed deductions/yr', c: 'text-amber-400' },
+            { v: '30 sec', l: 'to know what you owe', c: 'text-cyan-400' },
           ].map((s, i) => (
-            <div key={i}>
-              <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
-              <div className="text-xs text-muted-foreground mt-1">{s.label}</div>
+            <div key={i} className="text-center">
+              <div className={`text-2xl font-bold ${s.c}`}>{s.v}</div>
+              <div className="text-xs text-muted-foreground mt-1">{s.l}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* LIVE CALCULATOR */}
-      <section id="calculator" className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">See what you owe in <span className="text-cyan-400">30 seconds</span></h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">Enter your estimated 2026 income and expenses. No signup. No interview. Just answers.</p>
-          </div>
+      {/* ═══════════════ CALCULATOR — Full width, visual ═══════════════ */}
+      <section id="calculator" className="px-6 py-24">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-5 gap-12 items-start">
+          {/* Left: description + inputs (2 cols) */}
+          <div className="md:col-span-2">
+            <h2 className="text-3xl font-bold mb-3">See what you owe in <span className="text-cyan-400">30 seconds</span></h2>
+            <p className="text-muted-foreground mb-8">Enter your income and expenses. No signup. No 100-question interview. Just answers.</p>
 
-          <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-2xl shadow-emerald-500/5">
-            {/* Input */}
-            <div className="p-8 bg-gradient-to-r from-emerald-500/5 via-cyan-500/5 to-purple-500/5">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Annual 1099 Income</label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-lg">$</span>
-                    <input
-                      type="number"
-                      value={demoIncome}
-                      onChange={e => { setDemoIncome(e.target.value); setShowResults(true); }}
-                      onFocus={() => setShowResults(true)}
-                      className="w-full pl-8 pr-4 py-4 bg-muted border border-border rounded-xl text-2xl font-bold text-foreground focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/50"
-                      placeholder="75000"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Business Expenses</label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-lg">$</span>
-                    <input
-                      type="number"
-                      value={demoExpenses}
-                      onChange={e => { setDemoExpenses(e.target.value); setShowResults(true); }}
-                      onFocus={() => setShowResults(true)}
-                      className="w-full pl-8 pr-4 py-4 bg-muted border border-border rounded-xl text-2xl font-bold text-foreground focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/50"
-                      placeholder="15000"
-                    />
-                  </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Annual 1099 Income</label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                  <input type="number" value={demoIncome} onChange={e => setDemoIncome(e.target.value)}
+                    className="w-full pl-8 pr-4 py-3.5 bg-card border border-border rounded-xl text-xl font-bold focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/50" />
                 </div>
               </div>
-              {!showResults && (
-                <button onClick={() => setShowResults(true)} className="mt-6 w-full py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 text-background rounded-xl text-lg font-bold hover:from-emerald-600 hover:to-cyan-600 transition">
-                  Calculate My Taxes →
-                </button>
-              )}
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Business Expenses</label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                  <input type="number" value={demoExpenses} onChange={e => setDemoExpenses(e.target.value)}
+                    className="w-full pl-8 pr-4 py-3.5 bg-card border border-border rounded-xl text-xl font-bold focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/50" />
+                </div>
+              </div>
             </div>
 
-            {/* Results */}
-            {showResults && income > 0 && (
-              <div className="p-8">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="mt-8 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+              <div className="text-xs text-emerald-400 mb-1">💰 Deduction savings</div>
+              <div className="text-2xl font-bold text-emerald-400">{expenses > 0 ? fmt(deductionSavings) : '$0'}/yr</div>
+              <div className="text-xs text-muted-foreground mt-1">That&apos;s {expenses > 0 ? fmt(deductionSavings / 4) : '$0'} less per quarter</div>
+            </div>
+          </div>
+
+          {/* Right: results (3 cols) */}
+          <div className="md:col-span-3">
+            {income > 0 ? (
+              <div className="bg-card border border-border rounded-2xl p-8">
+                <div className="text-sm text-muted-foreground mb-6">Your 2026 Federal Tax Estimate</div>
+                <div className="grid grid-cols-2 gap-4 mb-8">
                   {[
-                    { label: 'Total Tax Owed', value: fmt(taxes.totalTax), bg: 'from-red-500/10 to-red-500/5', border: 'border-red-500/20', color: 'text-red-400' },
-                    { label: 'Quarterly Payment', value: fmt(taxes.quarterly), bg: 'from-amber-500/10 to-amber-500/5', border: 'border-amber-500/20', color: 'text-amber-400' },
-                    { label: 'Effective Rate', value: `${taxes.effectiveRate.toFixed(1)}%`, bg: 'from-cyan-500/10 to-cyan-500/5', border: 'border-cyan-500/20', color: 'text-cyan-400' },
-                    { label: 'Take-Home Pay', value: fmt(taxes.takeHome), bg: 'from-emerald-500/10 to-emerald-500/5', border: 'border-emerald-500/20', color: 'text-emerald-400' },
-                  ].map((card, i) => (
-                    <div key={i} className={`bg-gradient-to-br ${card.bg} border ${card.border} rounded-xl p-4 text-center`}>
-                      <div className="text-xs text-muted-foreground font-medium mb-1">{card.label}</div>
-                      <div className={`text-2xl font-bold ${card.color}`}>{card.value}</div>
+                    { l: 'Total Tax Owed', v: fmt(taxes.totalTax), c: 'text-red-400', bg: 'bg-red-500/5 border-red-500/20' },
+                    { l: 'Quarterly Payment', v: fmt(taxes.quarterly), c: 'text-amber-400', bg: 'bg-amber-500/5 border-amber-500/20' },
+                    { l: 'Effective Rate', v: `${taxes.effectiveRate.toFixed(1)}%`, c: 'text-cyan-400', bg: 'bg-cyan-500/5 border-cyan-500/20' },
+                    { l: 'Take-Home Pay', v: fmt(taxes.takeHome), c: 'text-emerald-400', bg: 'bg-emerald-500/5 border-emerald-500/20' },
+                  ].map((c, i) => (
+                    <div key={i} className={`${c.bg} border rounded-xl p-5`}>
+                      <div className="text-xs text-muted-foreground mb-1">{c.l}</div>
+                      <div className={`text-3xl font-bold ${c.c}`}>{c.v}</div>
                     </div>
                   ))}
                 </div>
 
-                {/* Tax Breakdown */}
-                <div className="bg-muted rounded-xl p-6 mb-6">
-                  <h3 className="font-semibold mb-4 text-sm text-muted-foreground uppercase tracking-wider">Tax Breakdown</h3>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between"><span className="text-muted-foreground">Self-Employment Tax (15.3%)</span><span className="font-medium">{fmt(taxes.seTax)}</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">Federal Income Tax</span><span className="font-medium">{fmt(taxes.incomeTax)}</span></div>
-                    <div className="flex justify-between border-t border-border pt-3 mt-3"><span className="font-semibold">Total Federal Tax</span><span className="font-bold text-red-400">{fmt(taxes.totalTax)}</span></div>
+                {/* Visual breakdown bar */}
+                <div className="mb-6">
+                  <div className="text-xs text-muted-foreground mb-2">Where your money goes</div>
+                  <div className="h-8 rounded-lg overflow-hidden flex">
+                    <div className="bg-emerald-500 flex items-center justify-center text-[10px] font-medium text-white" style={{ width: `${(taxes.takeHome / income) * 100}%` }}>Take-home</div>
+                    <div className="bg-amber-500 flex items-center justify-center text-[10px] font-medium text-white" style={{ width: `${(taxes.seTax / income) * 100}%` }}>SE Tax</div>
+                    <div className="bg-red-500 flex items-center justify-center text-[10px] font-medium text-white" style={{ width: `${(taxes.incomeTax / income) * 100}%` }}>Income Tax</div>
                   </div>
                 </div>
 
-                {/* Deduction Savings */}
-                {expenses > 0 && (
-                  <div className="bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-xl p-6 mb-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-emerald-100 text-sm font-medium">💰 Your deductions are saving you</div>
-                        <div className="text-3xl font-bold text-white mt-1">{fmt(deductionSavings)}/year</div>
-                        <div className="text-emerald-100 text-sm mt-1">That&apos;s {fmt(deductionSavings / 4)} less per quarterly payment</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Self-Employment Tax (15.3%)</span><span className="font-medium">{fmt(taxes.seTax)}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Federal Income Tax</span><span className="font-medium">{fmt(taxes.incomeTax)}</span></div>
+                  <div className="flex justify-between pt-2 border-t border-border"><span className="font-semibold">Total Federal Tax</span><span className="font-bold text-red-400">{fmt(taxes.totalTax)}</span></div>
+                </div>
 
-                {/* CTA */}
-                <div className="text-center bg-gradient-to-r from-emerald-500/5 via-cyan-500/5 to-purple-500/5 border border-border rounded-xl p-8">
-                  <p className="text-foreground mb-2 font-medium">This is just the beginning.</p>
-                  <p className="text-muted-foreground text-sm mb-4">Sign up to track income & expenses, get deadline alerts, and export reports for your CPA.</p>
-                  <Link href="/signup" className="inline-block bg-gradient-to-r from-emerald-500 to-cyan-500 text-background px-8 py-3 rounded-lg font-bold hover:from-emerald-600 hover:to-cyan-600 transition">
-                    Start Tracking Free →
+                <div className="mt-6 text-center">
+                  <Link href="/signup" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-background font-medium hover:from-emerald-600 hover:to-cyan-600 transition">
+                    Start Tracking for Real <ArrowRight className="w-4 h-4" />
                   </Link>
+                  <p className="text-xs text-muted-foreground mt-2">Free 14-day trial</p>
                 </div>
+              </div>
+            ) : (
+              <div className="bg-card border border-border rounded-2xl p-16 text-center">
+                <Calculator className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                <p className="text-muted-foreground">Enter your income to see your tax estimate</p>
               </div>
             )}
           </div>
         </div>
       </section>
 
-      {/* Why Not TurboTax — Comparison Section */}
-      <section id="compare" className="py-20 px-6 bg-card/50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+      {/* ═══════════════ WHY NOT TURBOTAX — Alternating split ═══════════════ */}
+      <section className="px-6 py-24 bg-card/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-3">TurboTax wasn&apos;t built for you</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              TurboTax, H&R Block, and QuickBooks are designed for W-2 employees filing once a year. 
-              If you&apos;re a freelancer or 1099 contractor, you need a tool that works <em>all year</em> — not just in April.
-            </p>
+            <p className="text-muted-foreground max-w-2xl mx-auto">It&apos;s built for W-2 employees filing once a year. You need something that works all year.</p>
           </div>
 
-          <div className="rounded-2xl border border-border bg-card overflow-hidden">
-            <div className="grid grid-cols-3 text-center text-sm font-medium py-4 px-6 bg-muted">
-              <div className="text-left text-muted-foreground">Feature</div>
-              <div className="text-emerald-400">TaxPal</div>
-              <div className="text-muted-foreground">TurboTax SE</div>
-            </div>
-            {comparisonRows.map((row, i) => (
-              <div key={i} className="grid grid-cols-3 items-center py-4 px-6 border-t border-border text-sm hover:bg-muted/50 transition">
-                <div>
-                  <div className="font-medium">{row.feature}</div>
-                  {row.note && <div className="text-xs text-muted-foreground mt-0.5">{row.note}</div>}
+          {/* Alternating rows */}
+          <div className="space-y-20">
+            {[
+              {
+                title: 'Real-time quarterly estimates',
+                desc: 'TurboTax only calculates at filing time. TaxPal updates your tax estimate every time you log income or expenses — so you always know what to pay each quarter.',
+                icon: Calculator, color: 'from-emerald-500 to-cyan-500',
+                visual: (
+                  <div className="bg-card border border-border rounded-xl p-6">
+                    <div className="text-xs text-muted-foreground mb-3">Quarterly Payments</div>
+                    {['Q1 · Apr 15', 'Q2 · Jun 16', 'Q3 · Sep 15', 'Q4 · Jan 15'].map((q, i) => (
+                      <div key={i} className={`flex items-center justify-between py-3 ${i > 0 ? 'border-t border-border' : ''}`}>
+                        <div className="flex items-center gap-3">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${i === 0 ? 'bg-amber-500/10 text-amber-400 ring-2 ring-amber-500/30' : 'bg-muted text-muted-foreground'}`}>
+                            Q{i + 1}
+                          </div>
+                          <span className="text-sm">{q}</span>
+                        </div>
+                        <span className="text-sm font-bold">{fmt(taxes.quarterly)}</span>
+                      </div>
+                    ))}
+                  </div>
+                ),
+              },
+              {
+                title: 'Track deductions year-round',
+                desc: 'Stop scrambling for receipts in April. Log expenses as they happen — categorized by IRS Schedule C. Meals at 50%, home office, mileage, software, and 9 more categories.',
+                icon: Receipt, color: 'from-amber-500 to-orange-500',
+                visual: (
+                  <div className="bg-card border border-border rounded-xl p-6">
+                    <div className="text-xs text-muted-foreground mb-3">Expense Categories (IRS Schedule C)</div>
+                    {[
+                      { cat: 'Home Office', amt: '$4,200', pct: 100, w: 85 },
+                      { cat: 'Software & Tools', amt: '$2,880', pct: 100, w: 60 },
+                      { cat: 'Meals & Entertainment', amt: '$1,920', pct: 50, w: 40 },
+                      { cat: 'Vehicle/Mileage', amt: '$3,100', pct: 100, w: 65 },
+                      { cat: 'Professional Development', amt: '$890', pct: 100, w: 20 },
+                    ].map((c, i) => (
+                      <div key={i} className={`${i > 0 ? 'mt-3' : ''}`}>
+                        <div className="flex justify-between text-xs mb-1">
+                          <span>{c.cat} <span className="text-muted-foreground">({c.pct}%)</span></span>
+                          <span className="font-medium">{c.amt}</span>
+                        </div>
+                        <div className="h-2 bg-muted rounded-full"><div className="h-2 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" style={{ width: `${c.w}%` }} /></div>
+                      </div>
+                    ))}
+                  </div>
+                ),
+              },
+              {
+                title: 'Export-ready for your CPA',
+                desc: 'One click to download a complete tax report: income by source, expenses by IRS category, quarterly breakdown, and total tax computation. Your CPA will love you.',
+                icon: FileText, color: 'from-blue-500 to-indigo-500',
+                visual: (
+                  <div className="bg-card border border-border rounded-xl p-6">
+                    <div className="text-xs text-muted-foreground mb-3">Tax Report Preview</div>
+                    <div className="space-y-2 text-xs font-mono">
+                      <div className="text-muted-foreground">═══ 2026 TAX SUMMARY ═══</div>
+                      <div className="flex justify-between"><span>Gross Income</span><span>$75,000</span></div>
+                      <div className="flex justify-between"><span>Total Expenses</span><span className="text-red-400">-$15,000</span></div>
+                      <div className="flex justify-between font-bold"><span>Net Income</span><span>$60,000</span></div>
+                      <div className="h-px bg-border my-1" />
+                      <div className="flex justify-between"><span>SE Tax</span><span>$8,478</span></div>
+                      <div className="flex justify-between"><span>Income Tax</span><span>$4,247</span></div>
+                      <div className="flex justify-between font-bold text-red-400"><span>Total Tax</span><span>$12,725</span></div>
+                      <div className="flex justify-between font-bold text-emerald-400"><span>Take-Home</span><span>$47,275</span></div>
+                    </div>
+                    <div className="mt-4 flex gap-2">
+                      <div className="flex-1 py-2 text-center text-[10px] font-medium bg-blue-500/10 border border-blue-500/20 rounded-lg text-blue-400">⬇ Download CSV</div>
+                      <div className="flex-1 py-2 text-center text-[10px] font-medium bg-muted border border-border rounded-lg text-muted-foreground">📧 Email to CPA</div>
+                    </div>
+                  </div>
+                ),
+              },
+            ].map((section, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                className={`grid md:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'md:direction-rtl' : ''}`}>
+                <div className={i % 2 === 1 ? 'md:order-2' : ''}>
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${section.color} flex items-center justify-center mb-4`}>
+                    <section.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3">{section.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{section.desc}</p>
                 </div>
-                <div className="text-center">
-                  {row.taxpal ? <Check className="w-5 h-5 text-emerald-400 mx-auto" /> : <X className="w-5 h-5 text-red-400 mx-auto" />}
-                </div>
-                <div className="text-center">
-                  {row.turbotax ? <Check className="w-5 h-5 text-emerald-400 mx-auto" /> : <X className="w-5 h-5 text-red-400/50 mx-auto" />}
-                </div>
-              </div>
-            ))}
-            <div className="grid grid-cols-3 items-center py-4 px-6 border-t border-border bg-muted/50">
-              <div className="font-bold">Annual cost</div>
-              <div className="text-center font-bold text-emerald-400">$108/yr</div>
-              <div className="text-center font-bold text-red-400">$219+/yr</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Grid */}
-      <section id="features" className="py-20 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">Everything you need. Nothing you don&apos;t.</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">Purpose-built for freelancers. No bloated accounting software. No spreadsheet formulas to debug.</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((f, i) => (
-              <motion.div
-                key={f.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="border border-border rounded-xl p-6 bg-card hover-elevate group"
-              >
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${f.color} flex items-center justify-center mb-4`}>
-                  <f.icon className="w-5 h-5 text-background" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
+                <div className={i % 2 === 1 ? 'md:order-1' : ''}>{section.visual}</div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Problem Section */}
-      <section className="py-20 px-6 bg-card/50">
+      {/* ═══════════════ COMPARISON TABLE ═══════════════ */}
+      <section className="px-6 py-24">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">The freelancer tax trap</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { emoji: '😰', title: 'Surprise tax bills', desc: '42% of freelancers underpay estimated taxes. The IRS charges 8% penalty on underpayments.', gradient: 'from-red-500/10 to-red-500/5' },
-              { emoji: '📝', title: 'Missed deductions', desc: 'The average freelancer misses $2,400/year in deductions. That\u2019s real money you\u2019re handing to the IRS.', gradient: 'from-amber-500/10 to-amber-500/5' },
-              { emoji: '💸', title: 'Expensive CPAs', desc: 'CPAs charge $200-500/hr for quarterly estimates. TaxPal does the same calculation for $9/month.', gradient: 'from-purple-500/10 to-purple-500/5' },
-            ].map((card, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className={`bg-gradient-to-br ${card.gradient} border border-border rounded-xl p-6 text-center hover-elevate`}
-              >
-                <div className="text-4xl mb-4">{card.emoji}</div>
-                <h3 className="font-semibold mb-2">{card.title}</h3>
-                <p className="text-muted-foreground text-sm">{card.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-20 px-6">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Get started in <span className="text-cyan-400">3 minutes</span></h2>
-          <div className="space-y-8">
-            {[
-              { step: '1', title: 'Enter your income', desc: 'Tell us your expected 1099 income and filing status. Takes 30 seconds.' },
-              { step: '2', title: 'Track expenses as they happen', desc: 'Log deductions in one tap. We categorize them by IRS Schedule C automatically.' },
-              { step: '3', title: 'Pay the right amount each quarter', desc: 'Get your exact quarterly payment amount + deadline reminders. Export reports for your CPA.' },
-            ].map((s, i) => (
-              <motion.div
-                key={s.step}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="flex gap-6 items-start"
-              >
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-cyan-500 text-background rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0">{s.step}</div>
-                <div>
-                  <h3 className="font-semibold text-lg mb-1">{s.title}</h3>
-                  <p className="text-muted-foreground">{s.desc}</p>
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            <div>
+              <h2 className="text-3xl font-bold mb-4">Why freelancers switch from TurboTax</h2>
+              <p className="text-muted-foreground mb-6">TurboTax Self-Employed costs $219+ and only works at filing time. TaxPal is $9/mo and works all year.</p>
+              <div className="space-y-3">
+                {[
+                  'Real-time quarterly estimates',
+                  'Year-round expense tracking',
+                  'IRS Schedule C categorization',
+                  'No 100-question interview',
+                  'CPA-ready exports anytime',
+                  '$108/yr vs $219+/yr',
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-emerald-400" />
+                    </div>
+                    <span className="text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="bg-card border border-border rounded-2xl overflow-hidden">
+              <div className="grid grid-cols-3 text-xs font-medium py-3 px-5 bg-muted">
+                <span className="text-muted-foreground">Feature</span>
+                <span className="text-center text-emerald-400">TaxPal</span>
+                <span className="text-center text-muted-foreground">TurboTax</span>
+              </div>
+              {[
+                ['Quarterly estimates', true, false],
+                ['Year-round tracking', true, false],
+                ['SE tax + QBI calc', true, true],
+                ['Deduction categorization', true, false],
+                ['No interview required', true, false],
+                ['Export anytime', true, false],
+              ].map(([feat, us, them], i) => (
+                <div key={i} className="grid grid-cols-3 items-center py-3 px-5 border-t border-border text-xs">
+                  <span>{feat as string}</span>
+                  <div className="text-center">{us ? <Check className="w-4 h-4 text-emerald-400 mx-auto" /> : <X className="w-4 h-4 text-red-400 mx-auto" />}</div>
+                  <div className="text-center">{them ? <Check className="w-4 h-4 text-emerald-400 mx-auto" /> : <X className="w-4 h-4 text-red-400/40 mx-auto" />}</div>
                 </div>
+              ))}
+              <div className="grid grid-cols-3 items-center py-3 px-5 border-t border-border bg-muted/50 text-xs font-bold">
+                <span>Annual cost</span>
+                <span className="text-center text-emerald-400">$108</span>
+                <span className="text-center text-red-400">$219+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════ FEATURES — Bento grid ═══════════════ */}
+      <section id="features" className="px-6 py-24 bg-card/30">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Everything you need. Nothing you don&apos;t.</h2>
+          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">Purpose-built for freelancers. No bloated accounting software.</p>
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              { icon: Calculator, title: 'Tax Calculator', desc: '2026 brackets, SE tax, QBI, standard deduction — instant.', color: 'from-emerald-500 to-cyan-500', span: '' },
+              { icon: Receipt, title: 'Income & Expense Tracker', desc: 'Log every payment and deduction. Categorized by IRS Schedule C.', color: 'from-cyan-500 to-blue-500', span: 'md:col-span-2' },
+              { icon: Bell, title: 'Quarterly Alerts', desc: 'Never miss April 15, June 16, September 15, or January 15.', color: 'from-purple-500 to-pink-500', span: 'md:col-span-2' },
+              { icon: TrendingDown, title: 'Deduction Maximizer', desc: '12 IRS categories with auto-calculated percentages.', color: 'from-amber-500 to-orange-500', span: '' },
+              { icon: FileText, title: 'CSV Reports', desc: 'One-click export: income, expenses, tax computation.', color: 'from-emerald-500 to-teal-500', span: '' },
+              { icon: RefreshCw, title: 'W-2 → 1099 Planner', desc: 'Model your freelance take-home before you quit.', color: 'from-blue-500 to-purple-500', span: 'md:col-span-2' },
+            ].map((f, i) => (
+              <motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
+                className={`border border-border rounded-xl p-6 bg-card hover:border-emerald-500/30 transition ${f.span}`}>
+                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${f.color} flex items-center justify-center mb-3`}>
+                  <f.icon className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-semibold mb-1">{f.title}</h3>
+                <p className="text-sm text-muted-foreground">{f.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="py-20 px-6 bg-card/50">
+      {/* ═══════════════ PRICING ═══════════════ */}
+      <section id="pricing" className="px-6 py-24">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">Less than one hour of a CPA&apos;s time</h2>
-            <p className="text-muted-foreground">14-day free trial on all plans. Cancel anytime.</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {tiers.map((tier) => (
-              <div key={tier.name} className={`bg-card rounded-xl p-8 relative border ${tier.popular ? 'border-emerald-500 scale-105 shadow-2xl shadow-emerald-500/10' : 'border-border'}`}>
-                {tier.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-gradient-to-r from-emerald-500 to-cyan-500 text-background px-3 py-1 rounded-full font-medium">Most Popular</span>
-                )}
-                <h3 className="text-lg font-bold">{tier.name}</h3>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-3">Less than one hour of a CPA&apos;s time</h2>
+          <p className="text-center text-muted-foreground mb-12">14-day free trial. Cancel anytime.</p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { name: 'Starter', price: '$9', desc: 'New freelancers', features: ['Tax calculator', 'Quarterly alerts', '50 entries/mo', 'CSV reports'], popular: false },
+              { name: 'Pro', price: '$29', desc: 'Active freelancers', features: ['Everything in Starter', 'Unlimited entries', 'W-2→1099 planner', 'Smart alerts', 'Full export', 'Priority support'], popular: true },
+              { name: 'Business', price: '$79', desc: 'Agencies', features: ['Everything in Pro', 'Multiple entities', 'CPA portal', 'API access', 'Filing prep'], popular: false },
+            ].map((tier) => (
+              <div key={tier.name} className={`bg-card rounded-2xl p-7 relative border ${tier.popular ? 'border-emerald-500 shadow-2xl shadow-emerald-500/10 scale-105' : 'border-border'}`}>
+                {tier.popular && <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-gradient-to-r from-emerald-500 to-cyan-500 text-background px-3 py-1 rounded-full font-medium">Most Popular</span>}
+                <h3 className="font-bold text-lg">{tier.name}</h3>
                 <p className="text-sm text-muted-foreground mb-4">{tier.desc}</p>
-                <p className="mb-6">
-                  <span className="text-4xl font-bold">{tier.price}</span>
-                  <span className="text-muted-foreground">{tier.period}</span>
-                </p>
-                <ul className="space-y-3 mb-8">
-                  {tier.features.map((f) => (
-                    <li key={f} className="text-sm text-muted-foreground flex items-start gap-2">
-                      <Check className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                      {f}
-                    </li>
+                <p className="mb-6"><span className="text-4xl font-bold">{tier.price}</span><span className="text-muted-foreground">/mo</span></p>
+                <ul className="space-y-2.5 mb-6">
+                  {tier.features.map(f => (
+                    <li key={f} className="text-sm text-muted-foreground flex items-start gap-2"><Check className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />{f}</li>
                   ))}
                 </ul>
-                <Link href={tier.href} className={`block w-full text-center py-3 rounded-lg font-medium transition ${tier.popular ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-background hover:from-emerald-600 hover:to-cyan-600' : 'bg-muted hover:bg-border'}`}>
-                  {tier.cta}
+                <Link href="/signup" className={`block w-full text-center py-3 rounded-xl font-medium transition ${tier.popular ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-background hover:from-emerald-600 hover:to-cyan-600' : 'bg-muted hover:bg-border'}`}>
+                  Start Free Trial
                 </Link>
               </div>
             ))}
@@ -540,14 +476,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute w-[600px] h-[600px] rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20" style={{ background: 'rgba(52, 211, 153, 0.3)' }} />
+      {/* ═══════════════ FINAL CTA ═══════════════ */}
+      <section className="px-6 py-24 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute w-[600px] h-[600px] rounded-full blur-[100px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 bg-emerald-500/30" />
         </div>
         <div className="max-w-2xl mx-auto text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Q1 estimated taxes are due April 15</h2>
-          <p className="text-muted-foreground mb-8 text-lg">Don&apos;t wait until you owe penalties. Start tracking today — it takes 3 minutes.</p>
+          <p className="text-muted-foreground mb-8 text-lg">Don&apos;t wait until you owe penalties.</p>
           <Link href="/signup" className="inline-block bg-gradient-to-r from-emerald-500 to-cyan-500 text-background px-10 py-4 rounded-xl text-lg font-bold hover:from-emerald-600 hover:to-cyan-600 transition shadow-xl shadow-emerald-500/20">
             Start Your Free Trial →
           </Link>
@@ -555,14 +491,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-border py-8 px-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between text-sm text-muted-foreground">
           <p>© 2026 TaxPal. A <a href="https://projectgreenbelt.com" className="text-emerald-400 hover:underline">Greenbelt Ventures</a> product.</p>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-foreground transition">Privacy</Link>
-            <Link href="/terms" className="hover:text-foreground transition">Terms</Link>
-          </div>
+          <div className="flex gap-4"><Link href="/privacy" className="hover:text-foreground">Privacy</Link><Link href="/terms" className="hover:text-foreground">Terms</Link></div>
         </div>
       </footer>
     </main>
