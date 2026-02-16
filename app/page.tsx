@@ -185,6 +185,80 @@ export default function Home() {
 
           <p className="text-sm text-muted-foreground">No credit card required · 14-day free trial · Cancel anytime</p>
         </div>
+
+        {/* Product Mockup */}
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1.1 }}
+          className="relative z-10 max-w-5xl mx-auto mt-16 px-6"
+        >
+          <div className="rounded-xl border border-border bg-card shadow-2xl shadow-emerald-500/10 overflow-hidden">
+            {/* Browser chrome */}
+            <div className="flex items-center gap-2 px-4 py-3 bg-muted border-b border-border">
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                <div className="w-3 h-3 rounded-full bg-green-500/60" />
+              </div>
+              <div className="flex-1 mx-4">
+                <div className="bg-background rounded-md px-3 py-1 text-xs text-muted-foreground text-center">taxpal-kappa.vercel.app/dashboard/tracker</div>
+              </div>
+            </div>
+            {/* Fake dashboard content */}
+            <div className="p-6 bg-background">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <div className="text-lg font-bold">Income & Expense Tracker</div>
+                  <div className="text-xs text-muted-foreground">Q1 2026 · Tax Year in Progress</div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-xs text-emerald-400">+ Add Income</div>
+                  <div className="px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg text-xs text-red-400">+ Add Expense</div>
+                </div>
+              </div>
+              {/* Summary cards */}
+              <div className="grid grid-cols-4 gap-3 mb-6">
+                {[
+                  { label: 'Total Income', value: '$47,250', color: 'text-emerald-400', bg: 'from-emerald-500/10 to-emerald-500/5' },
+                  { label: 'Total Expenses', value: '$12,890', color: 'text-red-400', bg: 'from-red-500/10 to-red-500/5' },
+                  { label: 'Estimated Tax', value: '$8,432', color: 'text-amber-400', bg: 'from-amber-500/10 to-amber-500/5' },
+                  { label: 'Q1 Payment Due', value: '$2,108', color: 'text-cyan-400', bg: 'from-cyan-500/10 to-cyan-500/5' },
+                ].map((c, i) => (
+                  <div key={i} className={`bg-gradient-to-br ${c.bg} border border-border rounded-lg p-3`}>
+                    <div className="text-[10px] text-muted-foreground">{c.label}</div>
+                    <div className={`text-lg font-bold ${c.color}`}>{c.value}</div>
+                  </div>
+                ))}
+              </div>
+              {/* Fake table */}
+              <div className="border border-border rounded-lg overflow-hidden">
+                <div className="grid grid-cols-5 text-[10px] text-muted-foreground font-medium py-2 px-4 bg-muted">
+                  <span>Date</span><span>Description</span><span>Category</span><span className="text-right">Amount</span><span className="text-right">Type</span>
+                </div>
+                {[
+                  { date: 'Feb 14', desc: 'Acme Corp - Website Redesign', cat: 'Freelance Income', amt: '$4,500', type: 'income', color: 'text-emerald-400' },
+                  { date: 'Feb 12', desc: 'Adobe Creative Cloud', cat: 'Software & Subscriptions', amt: '-$54.99', type: 'expense', color: 'text-red-400' },
+                  { date: 'Feb 10', desc: 'Sarah K. - Logo Design', cat: 'Freelance Income', amt: '$1,200', type: 'income', color: 'text-emerald-400' },
+                  { date: 'Feb 8', desc: 'WeWork Day Pass', cat: 'Office & Workspace', amt: '-$29.00', type: 'expense', color: 'text-red-400' },
+                  { date: 'Feb 5', desc: 'Client Lunch - Marcus T.', cat: 'Meals (50% deductible)', amt: '-$47.80', type: 'expense', color: 'text-red-400' },
+                ].map((row, i) => (
+                  <div key={i} className="grid grid-cols-5 text-xs py-2.5 px-4 border-t border-border hover:bg-muted/50">
+                    <span className="text-muted-foreground">{row.date}</span>
+                    <span>{row.desc}</span>
+                    <span className="text-muted-foreground">{row.cat}</span>
+                    <span className={`text-right font-medium ${row.color}`}>{row.amt}</span>
+                    <span className="text-right">
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded ${row.type === 'income' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>{row.type}</span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          {/* Glow effect under mockup */}
+          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-emerald-500/10 blur-3xl rounded-full" />
+        </motion.div>
       </section>
 
       {/* Social Proof Bar */}
