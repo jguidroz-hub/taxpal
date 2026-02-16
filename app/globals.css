@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  border-color: hsl(220 10% 20%);
+}
+
+body {
+  background: hsl(220 16% 6%);
+  color: hsl(220 8% 98%);
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+.animate-gradient {
+  animation: gradient 4s ease infinite;
+  background-size: 200% auto;
+}
+
+.hover-elevate {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-elevate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
