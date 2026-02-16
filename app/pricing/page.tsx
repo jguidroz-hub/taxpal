@@ -11,8 +11,10 @@ const plans = [
     "name": "Starter",
     "price": 9,
     "features": [
-      "Core features",
-      "Up to 100 items",
+      "Estimated tax calculator",
+      "Quarterly deadline reminders",
+      "Up to 50 deductions/month",
+      "Basic tax reports",
       "Email support"
     ],
     "highlight": false
@@ -23,11 +25,27 @@ const plans = [
     "price": 29,
     "features": [
       "Everything in Starter",
-      "Unlimited items",
-      "Priority support",
-      "API access"
+      "Unlimited deductions",
+      "W-2 to 1099 transition planner",
+      "Smart tax law alerts",
+      "CSV/PDF export",
+      "Priority support"
     ],
     "highlight": true
+  },
+  {
+    "id": "business",
+    "name": "Business",
+    "price": 79,
+    "features": [
+      "Everything in Pro",
+      "Multiple business entities",
+      "CPA collaboration portal",
+      "API access",
+      "Quarterly filing prep",
+      "Dedicated support"
+    ],
+    "highlight": false
   }
 ];
 

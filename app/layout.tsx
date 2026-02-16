@@ -6,8 +6,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'TaxWise1099 - Financial planning platform for W-2 to 1099 employment transitions',
-  description: 'TaxWise1099 - Financial planning platform for W-2 to 1099 employment transitions — built to work',
+  title: 'TaxPal — Smart Tax Planning for Freelancers & 1099 Contractors',
+  description: 'Calculate estimated quarterly taxes, track deductions, and never miss a payment deadline. Built for freelancers transitioning from W-2 to 1099.',
 };
 
 export default function RootLayout({
