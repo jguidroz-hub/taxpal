@@ -97,6 +97,53 @@ export const invoices = pgTable('invoices', {
   subIdx: index('inv_sub_idx').on(table.subscriptionId),
 }));
 
+// ──────────────────────────────────────────────────────────
+// Tax Tracking (core product features)
+// ──────────────────────────────────────────────────────────
+export const incomeEntries = pgTable('income_entries', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  amount: integer('amount').notNull(), // cents
+  source: text('source').notNull(), // client name or income source
+  category: text('category').default('freelance'), // freelance, contract, side-project, other
+  date: timestamp('date').notNull(),
+  notes: text('notes'),
+  invoiceNumber: text('invoice_number'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  userIdx: index('inc_user_idx').on(table.userId),
+  dateIdx: index('inc_date_idx').on(table.date),
+}));
+
+export const expenseEntries = pgTable('expense_entries', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  amount: integer('amount').notNull(), // cents
+  category: text('category').notNull(), // IRS Schedule C categories
+  vendor: text('vendor'),
+  date: timestamp('date').notNull(),
+  notes: text('notes'),
+  deductionPercent: integer('deduction_percent').default(100), // e.g., 50 for meals
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  userIdx: index('exp_user_idx').on(table.userId),
+  dateIdx: index('exp_date_idx').on(table.date),
+  catIdx: index('exp_cat_idx').on(table.category),
+}));
+
+export const quarterlyPayments = pgTable('quarterly_payments', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  quarter: text('quarter').notNull(), // Q1-2026, Q2-2026, etc.
+  amount: integer('amount').notNull(), // cents
+  paidDate: timestamp('paid_date'),
+  confirmationNumber: text('confirmation_number'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  userIdx: index('qp_user_idx').on(table.userId),
+  quarterIdx: index('qp_quarter_idx').on(table.quarter),
+}));
+
 export const webhookEvents = pgTable('webhook_events', {
   id: text('id').primaryKey(), // Stripe event ID (for idempotency)
   type: text('type').notNull(),

@@ -95,6 +95,8 @@ export default function Dashboard() {
         </div>
         <div className="flex items-center gap-4">
           <span className="text-sm text-gray-500">{session.user?.email}</span>
+          <Link href="/dashboard/tracker" className="text-sm text-emerald-700 hover:text-emerald-800 font-medium">📊 Tracker</Link>
+          <Link href="/dashboard/smart-alerts" className="text-sm text-gray-600 hover:text-gray-900">Alerts</Link>
           <Link href="/settings" className="text-sm text-gray-600 hover:text-gray-900">Settings</Link>
           <Link href="/dashboard/billing" className="text-sm text-gray-600 hover:text-gray-900">Billing</Link>
           <button onClick={() => signOut()} className="text-sm text-red-600 hover:text-red-700">Sign Out</button>
