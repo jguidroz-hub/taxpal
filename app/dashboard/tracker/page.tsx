@@ -337,6 +337,13 @@ export default function TrackerPage() {
 
         {activeTab === 'summary' && (
           <div className="space-y-6">
+            {/* Export */}
+            <div className="flex justify-end">
+              <a href="/api/report" download className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 flex items-center gap-2">
+                📥 Download Tax Report (CSV)
+              </a>
+            </div>
+
             {/* Tax Summary */}
             <div className="bg-white rounded-xl border p-6">
               <h2 className="font-semibold mb-4">2026 Tax Summary</h2>
