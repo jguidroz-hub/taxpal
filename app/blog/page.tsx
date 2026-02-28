@@ -23,6 +23,14 @@ const posts = [
     tag: 'Tax Tips',
     readTime: '12 min read',
   },
+  {
+    slug: 'w2-to-1099-tax-guide',
+    title: 'W-2 to 1099: The Complete Tax Guide for New Freelancers',
+    description: 'Everything that changes when you switch from employee to freelancer: self-employment tax, quarterly payments, deductions, and business structure.',
+    date: 'February 28, 2026',
+    tag: 'Guide',
+    readTime: '12 min read',
+  },
 ];
 
 export default function BlogIndex() {
