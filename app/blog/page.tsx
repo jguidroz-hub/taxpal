@@ -8,6 +8,14 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'freelance-tax-deduction-checklist',
+    title: 'The Ultimate Freelance Tax Deduction Checklist for 2026',
+    description: 'Don\'t miss a single write-off. Every deduction for freelancers organized by category with IRS limits.',
+    date: 'February 28, 2026',
+    tag: 'Checklist',
+    readTime: '12 min read',
+  },
+  {
     slug: 'quarterly-tax-guide-freelancers',
     title: 'Quarterly Estimated Taxes for Freelancers: The Complete 2026 Guide',
     description: 'When to pay, how much to pay, and how to avoid underpayment penalties. Everything a freelancer needs to know about quarterly taxes.',

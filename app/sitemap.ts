@@ -10,5 +10,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/blog/quarterly-tax-guide-freelancers`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
     { url: `${BASE_URL}/blog/1099-tax-deductions`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
     { url: `${BASE_URL}/blog/w2-to-1099-tax-guide`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${BASE_URL}/blog/freelance-tax-deduction-checklist`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
   ];
 }
